@@ -36,7 +36,41 @@ document.addEventListener("DOMContentLoaded", function() {
             likesUl.appendChild(userLi)
 
         })
-    }
+        const likeButton = bookDisplay.querySelector('button')
+        likeButton.addEventListener('click', () =>{
+            let bookId = book.id
+            const newUser = {"id":1, "username":"pouros"}
+            const currentUsers = book.users
+            currentUsers.push(newUser)
+            //console.log(book.users, bookId)
+
+            fetch(`http://localhost:3000/books/${bookId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    'users': book.users
+                })
+            })
+            .then(res => res.json())
+            .then(book => {
+                                
+                const likesUl = document.querySelector('#user-likes')
+                likesUl.innerHTML= ''
+                book.users.forEach(user => {
+                const userLi = document.createElement('li')
+                userLi.innerText = `${user.username}`
+                
+                const likesUl = document.querySelector('#user-likes')
+                likesUl.appendChild(userLi)
+                })
+    
+            })
+            })          
+
+        }
+ })
 
 
-});
+;
